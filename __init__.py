@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import mycroft.util
 from adapt.intent import IntentBuilder
 from mycroft.skills.core import MycroftSkill
 from mycroft.version import CORE_VERSION_STR
@@ -22,23 +23,38 @@ class VersionCheckerSkill(MycroftSkill):
         super(VersionCheckerSkill, self).__init__("VersionCheckerSkill")
 
     def initialize(self):
-        intent = IntentBuilder('CheckVersion').require('CheckKeyword') \
-            .require('VersionKeyword').build()
+        intent = IntentBuilder('CheckVersion').require('Check') \
+            .require('Version').build()
         self.register_intent(intent, self.check_version)
 
-        intent = IntentBuilder('CheckPlatformBuild').require('CheckKeyword') \
-            .require('PlatformBuildKeyword')
+        intent = IntentBuilder('CheckPlatformBuild').require('Check') \
+            .require('PlatformBuild')
         self.register_intent(intent, self.check_platform_build)
 
     def check_version(self, message):
+        # Report the version of mycroft-core software
+        self.enclosure.deactivate_mouth_events()
         self.enclosure.mouth_text(CORE_VERSION_STR)
+
         self.speak_dialog('version', data={'version': CORE_VERSION_STR})
+
+        # NOTE: intentionally sticking with this deprecated API instead
+        # of mycroft.audio.wait_while_speaking() so that this skill
+        # works on 0.8.15+
+        mycroft.util.wait_while_speaking()
+        self.enclosure.activate_mouth_events()
 
     def check_platform_build(self, message):
         if 'platform_build' in self.config_core['enclosure']:
+            # Report the platform build (aka firmware version)
             build = self.config_core['enclosure']['platform_build']
+            self.enclosure.deactivate_mouth_events()
             self.enclosure.mouth_text(build)
+
             self.speak_dialog('platform.build', data={'build': build})
+
+            mycroft.util.wait_while_speaking()
+            self.enclosure.activate_mouth_events()
         else:
             self.speak_dialog('platform.build.none')
 

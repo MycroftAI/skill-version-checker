@@ -2,12 +2,12 @@
 Version Checker
 
 ## Description 
-Check the version of your Mycroft install using this skill.
+Report the version of your Mycroft install (mycroft-core) and of the platform you are running on (e.g. "Mark 1, build 10").
 
 ## Examples 
 * "check version"
-* "find your version"
-* "check your platform build"
+* "what version are you running"
+* "what's your platform build"
 
 ## Credits 
 Mycroft AI
