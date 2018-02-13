@@ -11,6 +11,8 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+import requests
+from requests import RequestException
 
 import mycroft.util
 from adapt.intent import IntentBuilder
@@ -19,6 +21,8 @@ from mycroft.version import CORE_VERSION_STR
 
 
 class VersionCheckerSkill(MycroftSkill):
+    RELEASE_URL = 'https://api.github.com/repos/mycroftai/mycroft-core/releases/latest'
+
     def __init__(self):
         super(VersionCheckerSkill, self).__init__("VersionCheckerSkill")
 
@@ -31,12 +35,30 @@ class VersionCheckerSkill(MycroftSkill):
             .require('PlatformBuild')
         self.register_intent(intent, self.check_platform_build)
 
+    @staticmethod
+    def find_version(version_str):
+        return list(map(int, version_str.split('.')))
+
     def check_version(self, message):
         # Report the version of mycroft-core software
         self.enclosure.deactivate_mouth_events()
         self.enclosure.mouth_text(CORE_VERSION_STR)
 
         self.speak_dialog('version', data={'version': CORE_VERSION_STR})
+
+        try:
+            request = requests.get(self.RELEASE_URL)
+            new_ver_str = request.json()['tag_name'].replace('release/v', '')
+            cur_ver = self.find_version(CORE_VERSION_STR)
+            new_ver = self.find_version(new_ver_str)
+
+            if cur_ver == new_ver:
+                self.speak_dialog('version.latest')
+            elif cur_ver < new_ver:
+                self.speak_dialog('version.older', {'new_version': new_ver_str})
+        except Exception as e:
+            error = e.__class__.__name__ + ': ' + str(e)
+            self.log.warning('Could not find latest version. ' + error)
 
         # NOTE: intentionally sticking with this deprecated API instead
         # of mycroft.audio.wait_while_speaking() so that this skill
