@@ -79,6 +79,11 @@ class VersionCheckerSkill(MycroftSkill):
             self.enclosure.activate_mouth_events()
         else:
             self.speak_dialog('platform.build.none')
+        # If this is a mainstream Linux, include basic version info
+        try:
+            self.speak(re.sub(r'\\[a-z]{1}', ' ', open("/etc/issue").readline()))
+        except Exception as e:
+            self.log.warning('/etc/issue not found.')
 
     def stop(self):
         pass
