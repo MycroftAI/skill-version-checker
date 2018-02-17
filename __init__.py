@@ -11,6 +11,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+import re
 import requests
 from requests import RequestException
 
@@ -81,9 +82,10 @@ class VersionCheckerSkill(MycroftSkill):
             self.speak_dialog('platform.build.none')
         # If this is a mainstream Linux, include basic version info
         try:
-            self.speak(re.sub(r'\\[a-z]{1}', ' ', open("/etc/issue").readline()))
+            opsys = re.sub(r'\\[a-z]{1}', ' ', open("/etc/issue").readline())
+            self.speak('On operating system: ' + opsys)
         except Exception as e:
-            self.log.warning('/etc/issue not found.')
+            self.log.warning('/etc/issue read failed. ' + e.__class__.__name__ + ': ' + str(e))
 
     def stop(self):
         pass
