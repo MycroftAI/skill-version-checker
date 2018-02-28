@@ -58,8 +58,7 @@ class VersionCheckerSkill(MycroftSkill):
             elif cur_ver < new_ver:
                 self.speak_dialog('version.older', {'new_version': new_ver_str})
         except Exception as e:
-            error = e.__class__.__name__ + ': ' + str(e)
-            self.log.warning('Could not find latest version. ' + error)
+            self.log.exception('Could not find latest version. ')
 
         # NOTE: intentionally sticking with this deprecated API instead
         # of mycroft.audio.wait_while_speaking() so that this skill
@@ -85,7 +84,7 @@ class VersionCheckerSkill(MycroftSkill):
             opsys = re.sub(r'\\[a-z]{1}', ' ', open("/etc/issue").readline())
             self.speak('On operating system: ' + opsys)
         except Exception as e:
-            self.log.warning('/etc/issue read failed. ' + e.__class__.__name__ + ': ' + str(e))
+            self.log.exception('/etc/issue read failed. ')
 
     def stop(self):
         pass
