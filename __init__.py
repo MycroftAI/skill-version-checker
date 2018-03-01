@@ -82,7 +82,9 @@ class VersionCheckerSkill(MycroftSkill):
         # If this is a mainstream Linux, include basic version info
         try:
             opsys = re.sub(r'\\[a-z]{1}', ' ', open("/etc/issue").readline())
-            self.speak('On operating system: ' + opsys)
+            # just in case issue file contains cruft decorative or otherwise
+            if re.search('\w{2,}',opsys):
+                self.speak('On operating system: ' + opsys)
         except Exception:
             self.log.exception('/etc/issue read failed. ')
 
