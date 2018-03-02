@@ -41,15 +41,19 @@ class VersionCheckerSkill(MycroftSkill):
 
     def check_version(self, message):
         # Report the version of mycroft-core software
-        self.enclosure.deactivate_mouth_events()
-        self.enclosure.mouth_text(CORE_VERSION_STR)
+        cur_ver = self.find_version(CORE_VERSION_STR)
 
-        self.speak_dialog('version', data={'version': CORE_VERSION_STR})
+        # alphaa fixes Mimic pronunciation
+        postfix = 'alphaa' if cur_ver < [1, 0, 0] else 'beta'
+
+        self.enclosure.deactivate_mouth_events()
+        self.enclosure.mouth_text(CORE_VERSION_STR + postfix[0])
+        data = {'version': CORE_VERSION_STR + ' ' + postfix}
+        self.speak_dialog('version', data)
 
         try:
             request = requests.get(self.RELEASE_URL)
             new_ver_str = request.json()['tag_name'].replace('release/v', '')
-            cur_ver = self.find_version(CORE_VERSION_STR)
             new_ver = self.find_version(new_ver_str)
 
             if cur_ver == new_ver:
