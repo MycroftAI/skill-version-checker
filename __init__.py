@@ -11,6 +11,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+import re
 import requests
 from requests import RequestException
 
@@ -60,9 +61,8 @@ class VersionCheckerSkill(MycroftSkill):
                 self.speak_dialog('version.latest')
             elif cur_ver < new_ver:
                 self.speak_dialog('version.older', {'new_version': new_ver_str})
-        except Exception as e:
-            error = e.__class__.__name__ + ': ' + str(e)
-            self.log.warning('Could not find latest version. ' + error)
+        except Exception:
+            self.log.exception('Could not find latest version. ')
 
         # NOTE: intentionally sticking with this deprecated API instead
         # of mycroft.audio.wait_while_speaking() so that this skill
@@ -83,6 +83,14 @@ class VersionCheckerSkill(MycroftSkill):
             self.enclosure.activate_mouth_events()
         else:
             self.speak_dialog('platform.build.none')
+        # If this is a mainstream Linux, include basic version info
+        try:
+            opsys = re.sub(r'\\[a-z]{1}', ' ', open("/etc/issue").readline())
+            # just in case issue file contains cruft decorative or otherwise
+            if re.search('\w{2,}',opsys):
+                self.speak('On operating system: ' + opsys)
+        except Exception:
+            self.log.exception('/etc/issue read failed. ')
 
     def stop(self):
         pass
