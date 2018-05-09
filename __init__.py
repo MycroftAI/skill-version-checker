@@ -13,10 +13,11 @@
 # limitations under the License.
 import re
 import requests
-from requests import RequestException
 
 import mycroft.util
 from adapt.intent import IntentBuilder
+
+from mycroft import Message
 from mycroft.skills.core import MycroftSkill
 from mycroft.version import CORE_VERSION_STR
 
@@ -61,6 +62,14 @@ class VersionCheckerSkill(MycroftSkill):
                 self.speak_dialog('version.latest')
             elif cur_ver < new_ver:
                 self.speak_dialog('version.older', {'new_version': new_ver_str})
+                yes_words = set(self.translate_list('yes'))
+                should_upgrade = self.get_response('ask.upgrade')
+                if any(word in should_upgrade.split() for word in yes_words):
+                    self.speak_dialog('upgrade.started')
+                    self.emitter.emit(Message('system.update'))
+                else:
+                    self.speak_dialog('upgrade.cancelled')
+
         except Exception:
             self.log.exception('Could not find latest version. ')
 
