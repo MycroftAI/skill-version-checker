@@ -1,1 +1,1 @@
-I am running mycroft-core version {{version}}.
+I am running mycroft-core version {{major}} oh {{minor}}, release {{build}}
