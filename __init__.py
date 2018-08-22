@@ -66,7 +66,7 @@ class VersionCheckerSkill(MycroftSkill):
                 should_upgrade = self.get_response('ask.upgrade')
                 if any(word in should_upgrade.split() for word in yes_words):
                     self.speak_dialog('upgrade.started')
-                    self.emitter.emit(Message('system.update'))
+                    self.bus.emit(Message('system.update'))
                 else:
                     self.speak_dialog('upgrade.cancelled')
 
