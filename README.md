@@ -1,14 +1,24 @@
-## Version Checker
-Version Checker
+# <img src='https://rawgithub.com/FortAwesome/Font-Awesome/master/advanced-options/raw-svg/solid/code-branch.svg ' card_color='#22a7f0' width='50' height='50' style='vertical-align:bottom'/> Version Checker
+Report the version of your Mycroft install and the platform you're using. 
 
-## Description 
-Report the version of your Mycroft install (mycroft-core) and of the platform you are running on (e.g. "Mark 1, build 10").
+## About 
+Report the version of your Mycroft install (`mycroft-core`) and of the platform you are running on - ie 
+> Mycroft Mark 1, version 18.2.13 beta
+
 
 ## Examples 
-* "check version"
-* "what version are you running"
-* "what's your platform build"
+* "Check version"
+* "What version are you running?"
+* "What's your platform build? "
 
 ## Credits 
-Mycroft AI
+Mycroft AI (@MycroftAI)
 
+## Category
+**Configuration**
+
+## Tags
+#version
+#build
+#platform
+#versioning
