@@ -102,7 +102,7 @@ class VersionCheckerSkill(MycroftSkill):
             if resp == 'yes':
                 self.speak_dialog('upgrade.started')
                 # TODO: On Github install, should we tell users how to update?
-                self.emitter.emit(Message('system.update'))
+                self.bus.emit(Message('system.update'))
             else:
                 self.speak_dialog('upgrade.cancelled')
 
@@ -176,7 +176,7 @@ class VersionCheckerSkill(MycroftSkill):
             # Save consent
             self.save_upgrade_permission(self.latest_ver)
             self.speak_dialog('upgrade.started')
-            self.emitter.emit(Message('system.update'))
+            self.bus.emit(Message('system.update'))
         else:
             self.speak_dialog('major.upgrade.declined')
 
@@ -191,7 +191,7 @@ class VersionCheckerSkill(MycroftSkill):
         user_config.store()
 
         # Notify all processes to update their loaded configs
-        self.emitter.emit(Message('configuration.updated'))
+        self.bus.emit(Message('configuration.updated'))
 
 
 def create_skill():
