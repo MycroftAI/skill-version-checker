@@ -68,7 +68,7 @@ class VersionCheckerSkill(MycroftSkill):
         if v:
             # Convert 18.2 into [18, 2, 999]
             v = float(v)  # in case someone entered it as a string
-            return [int(v), int(str(v-int(v))[2:]), 999]
+            return [int(v), int(str(round(v-int(v),2))[2:]), 999]
         else:
             # assume current major/minor version is legit
             return [CORE_VERSION_MAJOR, CORE_VERSION_MINOR, 999]
