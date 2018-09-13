@@ -39,6 +39,15 @@ class VersionCheckerSkill(MycroftSkill):
                            CORE_VERSION_BUILD]
 
     def initialize(self):
+        # Update allowed version to current version if lower or incorrect
+        current_allowed = self.config_core.get("max_allowed_core_version", 0)
+        core_version_float = CORE_VERSION_MAJOR + CORE_VERSION_MINOR / 10
+        if (not isinstance(current_allowed, float) or
+                current_allowed < core_version_float):
+            self.save_upgrade_permission([CORE_VERSION_MAJOR,
+                                          CORE_VERSION_MINOR])
+
+        # Start repeating event once aday to inform of new major version
         daily = 60 * 60 * 24  # seconds in a day
         self.schedule_repeating_event(self.daily_version_check,
                                       now_utc(),     # run asap
