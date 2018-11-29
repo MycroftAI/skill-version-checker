@@ -134,7 +134,7 @@ class VersionCheckerSkill(MycroftSkill):
         try:
             opsys = re.sub(r'\\[a-z]{1}', ' ', open("/etc/issue").readline())
             # just in case issue file contains cruft decorative or otherwise
-            if re.search('\w{2,}', opsys):
+            if re.search(r'\w{2,}', opsys):
                 self.speak('On operating system: ' + opsys)
         except Exception:
             self.log.exception('/etc/issue read failed. ')
