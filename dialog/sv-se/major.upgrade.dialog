@@ -1,0 +1,1 @@
+En stor uppdatering av Mycroft-mjukvaran är tillgänglig. Detta kommer flytta över dig till den nya {{major}} noll {{minor}} grenen. Byte av gren är vanligtvis smärtfritt. Det kan dock förekomma färdigheter som inte är tillgängliga på den nya grenen. Vill du påbörja uppgraderingen?
