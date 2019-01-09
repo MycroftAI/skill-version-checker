@@ -1,4 +1,4 @@
-# <img src='https://rawgithub.com/FortAwesome/Font-Awesome/master/advanced-options/raw-svg/solid/code-branch.svg' card_color='#22a7f0' width='50' height='50' style='vertical-align:bottom'/> Version Checker
+# <img src='https://raw.githack.com/FortAwesome/Font-Awesome/master/svgs/solid/code-branch.svg' card_color='#22a7f0' width='50' height='50' style='vertical-align:bottom'/> Version Checker
 Report the version of your Mycroft
 
 ## About
