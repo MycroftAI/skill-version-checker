@@ -1,1 +1,1 @@
-Estoy ejecutando la versión mycroft-core {{version}}.
+Me encuentro ejecutando la versión {{major}} punto {{minor}}, compilación {{build}} del mycroft-core
