@@ -27,6 +27,18 @@ from mycroft.util.time import now_utc
 from mycroft.configuration.config import LocalConf, USER_CONFIG
 
 
+JESSIE_VERSION = '8'  # Stretch is '9'
+
+
+def os_version():
+    """ Find os version ID. """
+    with open('/etc/os-release') as f:
+        for line in f:
+            elements = line.split('=')
+            if elements[0] == 'VERSION_ID':
+                return elements[1].strip().strip('"')
+
+
 class VersionCheckerSkill(MycroftSkill):
     RELEASE_URL = 'https://api.github.com/repos/mycroftai/mycroft-core/releases/latest'  # nopep8
 
@@ -53,6 +65,15 @@ class VersionCheckerSkill(MycroftSkill):
                                       now_utc(),     # run asap
                                       60 * 60 * 24,  # repeat daily
                                       daily, name='DailyVersionCheck')
+
+    def reschedule_reminder(self):
+        self.remove_event('recognizer_loop:audio_output_end')
+        self.cancel_scheduled_event('QueueNotice')
+        self.cancel_scheduled_event('DailyVersionCheck')
+        self.schedule_repeating_event(self.daily_version_check,
+                                      None,          # wait to run
+                                      60 * 60 * 24,  # seconds in a day
+                                      name='DailyVersionCheck')
 
     @staticmethod
     def find_version(version_str):
@@ -82,12 +103,27 @@ class VersionCheckerSkill(MycroftSkill):
             # assume current major/minor version is legit
             return [CORE_VERSION_MAJOR, CORE_VERSION_MINOR, 999]
 
+    def upgrade_possible(self):
+        """ Check if upgrade can be performed automatically.
+
+        Returns:
+            bool: True if automatic upgrade is possible else False
+        """
+        platform = self.config_core['enclosure'].get('platform', 'unknown')
+        if platform == 'mycroft_mark_1':
+            return True
+        elif platform == 'picroft' and os_version() == JESSIE_VERSION:
+            return True
+        else:
+            return False
+
     @intent_handler(IntentBuilder("").require("Check").require("Version"))
     def check_version(self, message):
         # Report the version of mycroft-core software
         self.query_for_latest_ver()
         cur_ver = [CORE_VERSION_MAJOR, CORE_VERSION_MINOR, CORE_VERSION_BUILD]
         new_ver = self.latest_ver
+        new_ver[1] = 4
         allowed_ver = self.get_allowed_ver()
         self.log.info("Current version: "+str(cur_ver))
         self.log.info("Latest version: "+str(new_ver))
@@ -103,8 +139,8 @@ class VersionCheckerSkill(MycroftSkill):
         if cur_ver == new_ver:
             self.speak_dialog('version.latest')
         elif new_ver > allowed_ver:
-            self._ask_about_major_upgrade()
-        elif cur_ver < new_ver:
+            self.inform_user()
+        elif cur_ver < new_ver and self.upgrade_possible():
             # Ask user if they want to update immediately
             resp = self.ask_yesno('ask.upgrade',
                                   data=self.ver_data(new_ver))
@@ -114,6 +150,10 @@ class VersionCheckerSkill(MycroftSkill):
                 self.bus.emit(Message('system.update'))
             else:
                 self.speak_dialog('upgrade.cancelled')
+        else:
+            self.speak_dialog('update.available', data=self.ver_data(new_ver))
+        self.reschedule_reminder()
+        
 
     @intent_handler(IntentBuilder("").require("Check").
                     require("PlatformBuild"))
@@ -169,13 +209,30 @@ class VersionCheckerSkill(MycroftSkill):
                                       60 * 60 * 24,  # seconds in a day
                                       name='DailyVersionCheck')
 
+    def inform_user(self):
+        """ Let the user know an update is ready.
+
+        If the device is capable of auto-update ask to start otherwise give
+        relevant instructions.
+        """
+        platform = self.config_core['enclosure'].get('platform', 'unknown')
+        if platform == 'mycroft_mark_1':
+            self._ask_about_major_upgrade()
+        elif platform == 'picroft' and os_version() == JESSIE_VERSION:
+            self._ask_about_major_upgrade()
+        elif platform == 'picroft':
+            self.speak_dialog('inform.picroft',
+                              data=self.ver_data(self.latest_ver))
+        else:
+            self.speak_dialog('inform.github',
+                              data=self.ver_data(self.latest_ver))
+
     def _queue_notice(self, message):
         if is_speaking():
             # Re-queue notice
             self.on_user_activity(message)
         else:
-            # Let the user know an update is ready
-            self._ask_about_major_upgrade()
+            self.inform_user()
 
     def _ask_about_major_upgrade(self):
         # Get user permission for major upgrade

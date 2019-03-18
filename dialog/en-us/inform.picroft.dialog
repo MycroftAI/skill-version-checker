@@ -1,0 +1,1 @@
+Your version is outdated. To upgrade picroft to {{major}} oh {{minor}}, release {{build}}. please restart the device, if you have updates set to manual you need to run "git pull" in the mycroft-core folder.
