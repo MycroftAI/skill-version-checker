@@ -123,7 +123,6 @@ class VersionCheckerSkill(MycroftSkill):
         self.query_for_latest_ver()
         cur_ver = [CORE_VERSION_MAJOR, CORE_VERSION_MINOR, CORE_VERSION_BUILD]
         new_ver = self.latest_ver
-        new_ver[1] = 4
         allowed_ver = self.get_allowed_ver()
         self.log.info("Current version: "+str(cur_ver))
         self.log.info("Latest version: "+str(new_ver))
@@ -153,7 +152,6 @@ class VersionCheckerSkill(MycroftSkill):
         else:
             self.speak_dialog('update.available', data=self.ver_data(new_ver))
         self.reschedule_reminder()
-        
 
     @intent_handler(IntentBuilder("").require("Check").
                     require("PlatformBuild"))
