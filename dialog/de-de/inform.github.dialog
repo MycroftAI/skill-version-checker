@@ -1,0 +1,1 @@
+Deine Version ist veraltet. Die aktuellste Version ist {{major}} oh {{minor}}, Release {{build}}. Für ein Upgrade führe den Befehl 'git pull' im Verzeichnis "mycroft-core" aus und starte mich neu.

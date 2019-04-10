@@ -1,0 +1,1 @@
+Tu versión está desfasada. Para actualizar picroft a {{major}}} cero {{minor}}, release {{build}}. Por favor, reinicia el dispositivo, si tienes actualizaciones configuradas en manual, necesitas ejecutar "git pull" en la carpeta mycroft-core.

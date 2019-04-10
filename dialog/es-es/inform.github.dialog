@@ -1,0 +1,1 @@
+Tu versión está desfasada. La última versión es {{major}} cero {{minor}}, release {{build}}. Para actualizar ejecuta 'git pull' en la carpeta mycroft-core y reiníciame. 
