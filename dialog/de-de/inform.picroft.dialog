@@ -1,1 +1,1 @@
-Ihre Version ist veraltet. Um ein Upgrade von picroft auf {{major}} oh {{minor}} durchzuführen, geben Sie {{build}} frei. Bitte starten Sie das Gerät neu. Wenn Sie Updates auf Manual gesetzt haben, müssen Sie "git pull" im Ordner "mycroft-core" ausführen.
+Deine Version ist veraltet. Um Picroft auf {{major}} Punkt {{minor}} zu aktualisieren, gib {{build}} frei. Bitte starte das Gerät neu. Falls du Updates auf manuell gesetzt hast, musst du "git pull" im "mycroft-core" Verzeichnis ausführen.
