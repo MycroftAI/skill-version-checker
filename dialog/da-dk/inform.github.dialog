@@ -1,0 +1,1 @@
+Din version er forældet. Den nyeste version er {{major}} komma {{minor}}, release {{build}}. For at opgradere, kør 'git pull' i mycroft-core mappen og genstart mig.

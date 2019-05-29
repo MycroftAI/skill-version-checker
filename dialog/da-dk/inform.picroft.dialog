@@ -1,0 +1,1 @@
+Din version er forældet. For at opgradere picroft til {{major}} komma {{minor}}, release {{build}}, genstart venligt maskinen. Hvis du har tilvalgt manuelle opdateringer skal du køre "git pull" i mycroft-core mappen.

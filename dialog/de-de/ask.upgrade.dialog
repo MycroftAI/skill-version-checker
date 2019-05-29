@@ -1,2 +1,2 @@
-Deine Version ist veraltet. Die letzte Version ist {{major}} punkt {{minor}}, Freigebende {{build}}.  Möchtest du das ich eine Aktualisierung starte?
-Deine Version ist veraltet. Die letzte Version ist {{major}} punkt {{minor}}, Freigebende {{build}}.  Möchtest du das ich mich auf die letzte Version Aktualisiere?
+Deine Version ist veraltet. Die neueste Version ist {{major}} Punkt {{minor}}, Version {{build}}.  Möchtest du, dass ich eine Aktualisierung starte?
+Deine Version ist veraltet. Die neueste Version ist {{major}} Punkt {{minor}}, Version {{build}}.  Möchtest du, dass ich auf die neueste Version aktualisiere?
