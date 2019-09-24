@@ -146,7 +146,10 @@ class VersionCheckerSkill(MycroftSkill):
             if resp == 'yes':
                 self.speak_dialog('upgrade.started')
                 # TODO: On Github install, should we tell users how to update?
-                self.bus.emit(Message('system.update'))
+                plat = self.config_core.get('enclosure', {}).get('platform')
+                self.bus.emit(Message('system.update',
+                                      {'is_paired': True,
+                                       'platform': plat}))
             else:
                 self.speak_dialog('upgrade.cancelled')
         else:
@@ -240,7 +243,10 @@ class VersionCheckerSkill(MycroftSkill):
             # Save consent
             self.save_upgrade_permission(self.latest_ver)
             self.speak_dialog('upgrade.started')
-            self.bus.emit(Message('system.update'))
+            plat = self.config_core.get('enclosure', {}).get('platform')
+            self.bus.emit(Message('system.update',
+                                  {'is_paired': True,
+                                  'platform': plat}))
         else:
             self.speak_dialog('major.upgrade.declined')
 
