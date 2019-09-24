@@ -145,6 +145,7 @@ class VersionCheckerSkill(MycroftSkill):
                                   data=self.ver_data(new_ver))
             if resp == 'yes':
                 self.speak_dialog('upgrade.started')
+                self.save_upgrade_permission(self.latest_ver)
                 # TODO: On Github install, should we tell users how to update?
                 plat = self.config_core.get('enclosure', {}).get('platform')
                 self.bus.emit(Message('system.update',
