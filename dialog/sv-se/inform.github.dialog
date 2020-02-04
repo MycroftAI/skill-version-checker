@@ -1,1 +1,1 @@
-Din mjukvara börjar vara gammal. Den senaste versionen är {{major}} punkt noll {{minor}}, release {{build}}. För att uppdatera kör 'git pull' i mycroft-core katalogen och starta om mig.
+Din mjukvara börjar bli gammal. Den senaste versionen är {{major}} punkt noll {{minor}}, release {{build}}. För att uppdatera kör 'git pull' i mycroft-core katalogen och starta om mig.
