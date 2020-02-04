@@ -1,1 +1,1 @@
-Din mjukvara börjar vara gammal. För att uppgradera Picroft till {{major}} punkt noll {{minor}}, release {{build}}. Vänligen starta om enheten, om du har valt manuella uppdateringar måste du köra "git pull" i mycroft-core-katalogen
+Din mjukvara börjar bli gammal. För att uppgradera Picroft till {{major}} punkt noll {{minor}}, release {{build}}. Vänligen starta om enheten, om du har valt manuella uppdateringar måste du köra "git pull" i mycroft-core-katalogen

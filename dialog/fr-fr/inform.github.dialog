@@ -1,0 +1,1 @@
+Votre version est obsolète. La dernière version est {{major}} oh {{{minor}}, release {{{build}}. Pour mettre à jour, lancez "git pull" dans le dossier mycroft-core et redémarrez-moi.
