@@ -15,7 +15,6 @@ import re
 import requests
 from datetime import timedelta
 
-import mycroft.util
 from adapt.intent import IntentBuilder
 from mycroft import Message
 from mycroft.audio import wait_while_speaking, is_speaking
@@ -131,8 +130,7 @@ class VersionCheckerSkill(MycroftSkill):
         # display the version on the device screen and speak it
         self.enclosure.deactivate_mouth_events()
         self.enclosure.mouth_text(CORE_VERSION_STR + "b")  # b for Beta
-        self.speak_dialog('version', self.ver_data(cur_ver))
-        mycroft.util.wait_while_speaking()
+        self.speak_dialog('version', self.ver_data(cur_ver), wait=True)
         self.enclosure.activate_mouth_events()
 
         if cur_ver == new_ver:
@@ -166,9 +164,8 @@ class VersionCheckerSkill(MycroftSkill):
             self.enclosure.deactivate_mouth_events()
             self.enclosure.mouth_text(build)
 
-            self.speak_dialog('platform.build', data={'build': build})
+            self.speak_dialog('platform.build', data={'build': build}, wait=True)
 
-            mycroft.util.wait_while_speaking()
             self.enclosure.activate_mouth_events()
         else:
             self.speak_dialog('platform.build.none')
