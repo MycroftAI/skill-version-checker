@@ -1,0 +1,1 @@
+Tvá verze je zastaralá. Poslední verze je {{major}} oh {{minor}}, build {{build}}. Chceš-li verzi vylepšit, spusť v adresáři mycroft-core 'git pull' a restartuj mě.

@@ -1,0 +1,1 @@
+Tvé verze je zastaralá. Chceš-li upgradovat picroft na {{major}} oh {{minor}}, build {{build}}, prosím restartuj zařízení. Pokud máš aktualizace nastavené na manuální, musíš spustit složku „git pull“ ve složce mycroft-core.
