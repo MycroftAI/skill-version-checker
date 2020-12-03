@@ -1,2 +1,2 @@
 Din version är gammal. Senaste versionen är {{major}} noll {{minor}}, släpp {{build}}.  Vill du att jag ska påbörja uppdateringen?
-Din version är gammal. Den senaste version är {{major}} noll {{minor}}, släpp {{build}}. Vill du uppgradera till den senaste versionen?
+Din version är föråldrad. Den senaste version är {{major}} punkt {{minor}}, släpp {{build}}.  Vill du uppdatera till den senaste versionen?

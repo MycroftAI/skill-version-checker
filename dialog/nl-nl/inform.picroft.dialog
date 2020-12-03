@@ -1,0 +1,1 @@
+Uw versie is verouderd. Om {picroft te upgraden naar {{major}} oh {{minor}}, release {{build}} . start het apparaat opnieuw op, als u updates op handmatig heeft ingesteld, moet u "git pull" in de map mycroft-core uitvoeren.

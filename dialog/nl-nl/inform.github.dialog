@@ -1,0 +1,1 @@
+Uw versie is verouderd. De nieuwste versie is {{major}} oh {{minor}}, release {{build}}. Om te upgraden voer je 'git pull' uit in de map mycroft-core en herstart je me.
