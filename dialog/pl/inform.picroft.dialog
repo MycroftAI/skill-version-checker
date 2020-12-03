@@ -1,0 +1,1 @@
+Jest dostępna aktualizacja. Aby zaktualizować picroft do {{major}} {{minor}}, wydanie {{build}}, zrestartuj urządzenie. Jeżeli jakieś aktualizacje uruchamiasz ręcznie, musisz wykonać 'git pull' w katalogu mycroft-core.
