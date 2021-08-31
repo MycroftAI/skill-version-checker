@@ -93,7 +93,8 @@ class VersionCheckerSkill(MycroftSkill):
 
         This assumes versions are using the mycroft-core versioning system.
         """
-        versions = [self.find_version(version_str) for version_str in version_list]
+        versions = [self.find_version(version_str)
+                    for version_str in version_list]
         major, minor, patch = -1, -1, -1
         for version in versions:
             newer = False
@@ -131,7 +132,7 @@ class VersionCheckerSkill(MycroftSkill):
         if v:
             # Convert 18.2 into [18, 2, 999]
             v = float(v)  # in case someone entered it as a string
-            return [int(v), int(str(round(v-int(v),2))[2:]), 999]
+            return [int(v), int(str(round(v-int(v), 2))[2:]), 999]
         else:
             # assume current major/minor version is legit
             return [CORE_VERSION_MAJOR, CORE_VERSION_MINOR, 999]
@@ -198,7 +199,8 @@ class VersionCheckerSkill(MycroftSkill):
             self.enclosure.deactivate_mouth_events()
             self.enclosure.mouth_text(build)
 
-            self.speak_dialog('platform.build', data={'build': build}, wait=True)
+            self.speak_dialog('platform.build', data={
+                              'build': build}, wait=True)
 
             self.enclosure.activate_mouth_events()
         else:
@@ -278,7 +280,7 @@ class VersionCheckerSkill(MycroftSkill):
             plat = self.config_core.get('enclosure', {}).get('platform')
             self.bus.emit(Message('system.update',
                                   {'is_paired': True,
-                                  'platform': plat}))
+                                   'platform': plat}))
         else:
             self.speak_dialog('major.upgrade.declined')
 
