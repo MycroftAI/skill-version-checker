@@ -11,17 +11,21 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
 import re
-import requests
 from datetime import timedelta
 
-from adapt.intent import IntentBuilder
+import requests
+
 from mycroft import Message
-from mycroft.audio import wait_while_speaking, is_speaking
-from mycroft.skills.core import MycroftSkill, intent_handler
+from mycroft.audio import is_speaking
+from mycroft.skills import MycroftSkill, intent_handler, AdaptIntent
 from mycroft.version import (
-    CORE_VERSION_MAJOR, CORE_VERSION_MINOR, CORE_VERSION_BUILD,
-    CORE_VERSION_STR)
+    CORE_VERSION_MAJOR,
+    CORE_VERSION_MINOR,
+    CORE_VERSION_BUILD,
+    CORE_VERSION_STR
+)
 from mycroft.util.time import now_utc
 from mycroft.configuration.config import LocalConf, USER_CONFIG
 
@@ -146,7 +150,7 @@ class VersionCheckerSkill(MycroftSkill):
         else:
             return False
 
-    @intent_handler(IntentBuilder("").require("Check").require("Version"))
+    @intent_handler(AdaptIntent("").require("Check").require("Version"))
     def check_version(self, message):
         # Report the version of mycroft-core software
         self.query_for_latest_ver()
@@ -185,7 +189,7 @@ class VersionCheckerSkill(MycroftSkill):
             self.speak_dialog('update.available', data=self.ver_data(new_ver))
         self.reschedule_reminder()
 
-    @intent_handler(IntentBuilder("").require("Check").
+    @intent_handler(AdaptIntent("").require("Check").
                     require("PlatformBuild"))
     def check_platform_build(self, message):
         if 'platform_build' in self.config_core['enclosure']:
