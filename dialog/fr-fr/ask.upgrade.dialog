@@ -1,2 +1,2 @@
-Votre version est dépassée. La dernière version est {{major}} oh {{minor}}, release {{build}}. Souhaitez-vous démarrer la mise à jour ?
-Votre version est obsolète. La dernière version est {{major}} oh {{minor}}, release {{build}}. Souhaitez-vous que je mette à jour vers la dernière version ?
+Votre version est (obsolète|dépassée). La dernière version est {{major}} point {{minor}}, diffusion {{build}}. Souhaitez-vous lancer|démarrer) la mise à jour ?
+Votre version est (périméeobsolète). La dernière version est {{major}} point {{minor}}, diffusion {{build}}. Souhaitez-vous (mettre|que je mette) à jour (vers la dernière version|) ?

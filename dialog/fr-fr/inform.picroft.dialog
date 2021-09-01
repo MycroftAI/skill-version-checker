@@ -1,1 +1,1 @@
-Votre version est obsolète. Pour mettre à jour picroft en {{major}} oh {{{minor}}, libérez {{build}}. Veuillez redémarrer l'appareil, si vous avez des mises à jour définies en manuel, vous devez lancer "git pull" dans le dossier mycroft-core.
+Votre version est (périmée|obsolète). Pour mettre à jour picroft en {{major}} point {{minor}}, diffusion {{build}}. Veuillez redémarrer l'appareil, si des mises à jour ne peuvent pas s'effectuer automatiquement vous devez lancer "git pull" dans le dossier mycroft-core.
