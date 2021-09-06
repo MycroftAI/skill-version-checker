@@ -151,7 +151,7 @@ class VersionCheckerSkill(MycroftSkill):
         else:
             return False
 
-    @intent_handler(AdaptIntent("").require("Check").require("Version"))
+    @intent_handler(AdaptIntent().require("Check").require("Version"))
     def check_version(self, message):
         # Report the version of mycroft-core software
         self.query_for_latest_ver()
@@ -190,7 +190,7 @@ class VersionCheckerSkill(MycroftSkill):
             self.speak_dialog('update.available', data=self.ver_data(new_ver))
         self.reschedule_reminder()
 
-    @intent_handler(AdaptIntent("").require("Check").
+    @intent_handler(AdaptIntent().require("Check").
                     require("PlatformBuild"))
     def check_platform_build(self, message):
         if 'platform_build' in self.config_core['enclosure']:
