@@ -11,17 +11,21 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
 import re
-import requests
 from datetime import timedelta
 
-from adapt.intent import IntentBuilder
+import requests
+
 from mycroft import Message
-from mycroft.audio import wait_while_speaking, is_speaking
-from mycroft.skills.core import MycroftSkill, intent_handler
+from mycroft.audio import is_speaking
+from mycroft.skills import MycroftSkill, intent_handler, AdaptIntent
 from mycroft.version import (
-    CORE_VERSION_MAJOR, CORE_VERSION_MINOR, CORE_VERSION_BUILD,
-    CORE_VERSION_STR)
+    CORE_VERSION_MAJOR,
+    CORE_VERSION_MINOR,
+    CORE_VERSION_BUILD,
+    CORE_VERSION_STR
+)
 from mycroft.util.time import now_utc
 from mycroft.configuration.config import LocalConf, USER_CONFIG
 
@@ -39,7 +43,7 @@ def os_version():
 
 
 class VersionCheckerSkill(MycroftSkill):
-    RELEASE_URL = 'https://api.github.com/repos/mycroftai/mycroft-core/releases/latest'  # nopep8
+    TAGS_URL = 'https://api.github.com/repos/mycroftai/mycroft-core/tags'  # nopep8
 
     def __init__(self):
         super(VersionCheckerSkill, self).__init__("VersionCheckerSkill")
@@ -84,11 +88,42 @@ class VersionCheckerSkill(MycroftSkill):
                 'minor': version_list[1],
                 'build': version_list[2]}
 
-    def query_for_latest_ver(self):
+    def get_max_version(self, version_list: list([str])) -> tuple((int, int, int)):
+        """Get the latest core version from a list of versions.
+
+        This assumes versions are using the mycroft-core versioning system.
+        """
+        versions = [self.find_version(version_str)
+                    for version_str in version_list]
+        major, minor, patch = -1, -1, -1
+        for version in versions:
+            newer = False
+            if version[0] > major:
+                newer = True
+            elif version[0] == major:
+                if version[1] > minor:
+                    newer = True
+                elif version[1] == minor and version[2] > patch:
+                    newer = True
+            if newer:
+                major, minor, patch = version
+        return (major, minor, patch)
+
+    def query_for_latest_ver(self) -> tuple((int, int, int)):
+        """Determine the latest version of mycroft-core from Git tags.
+
+        This queries the remote repo via the Github API.
+
+        Returns:
+            Tuple of version (Major, Minor, Patch)
+        """
         try:
-            request = requests.get(self.RELEASE_URL)
-            ver_str = request.json()['tag_name'].replace('release/v', '')
-            self.latest_ver = self.find_version(ver_str)
+            json_data = requests.get(self.TAGS_URL).json()
+            tags = [entry.get('name') for entry in json_data]
+            releases = list(filter(lambda tag: 'release/v' in tag, tags))
+            semvers = [tag[9:] for tag in releases]
+            latest_release = self.get_max_version(semvers)
+            return latest_release
         except Exception:
             self.log.exception('Could not find latest version. ')
 
@@ -97,7 +132,7 @@ class VersionCheckerSkill(MycroftSkill):
         if v:
             # Convert 18.2 into [18, 2, 999]
             v = float(v)  # in case someone entered it as a string
-            return [int(v), int(str(round(v-int(v),2))[2:]), 999]
+            return [int(v), int(str(round(v-int(v), 2))[2:]), 999]
         else:
             # assume current major/minor version is legit
             return [CORE_VERSION_MAJOR, CORE_VERSION_MINOR, 999]
@@ -116,7 +151,7 @@ class VersionCheckerSkill(MycroftSkill):
         else:
             return False
 
-    @intent_handler(IntentBuilder("").require("Check").require("Version"))
+    @intent_handler(AdaptIntent().require("Check").require("Version"))
     def check_version(self, message):
         # Report the version of mycroft-core software
         self.query_for_latest_ver()
@@ -155,7 +190,7 @@ class VersionCheckerSkill(MycroftSkill):
             self.speak_dialog('update.available', data=self.ver_data(new_ver))
         self.reschedule_reminder()
 
-    @intent_handler(IntentBuilder("").require("Check").
+    @intent_handler(AdaptIntent().require("Check").
                     require("PlatformBuild"))
     def check_platform_build(self, message):
         if 'platform_build' in self.config_core['enclosure']:
@@ -164,7 +199,8 @@ class VersionCheckerSkill(MycroftSkill):
             self.enclosure.deactivate_mouth_events()
             self.enclosure.mouth_text(build)
 
-            self.speak_dialog('platform.build', data={'build': build}, wait=True)
+            self.speak_dialog('platform.build', data={
+                              'build': build}, wait=True)
 
             self.enclosure.activate_mouth_events()
         else:
@@ -244,7 +280,7 @@ class VersionCheckerSkill(MycroftSkill):
             plat = self.config_core.get('enclosure', {}).get('platform')
             self.bus.emit(Message('system.update',
                                   {'is_paired': True,
-                                  'platform': plat}))
+                                   'platform': plat}))
         else:
             self.speak_dialog('major.upgrade.declined')
 
